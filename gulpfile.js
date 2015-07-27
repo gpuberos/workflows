@@ -18,11 +18,11 @@ var sassSources = ['components/sass/style.scss'];
 gulp.task('coffee', function() {
     gulp.src(coffeeSources)
         .pipe(coffee({ bare: true })
-            .on('error', gutil.log))
+        .on('error', gutil.log))
         .pipe(gulp.dest('components/scripts'))
 });
 
-gulp.task('js', function() {
+gulp.task('js', ['coffee'], function() {
     gulp.src(jsSources)
         .pipe(concat('script.js'))
         .pipe(browserify())
@@ -37,7 +37,9 @@ gulp.task('compass', function() {
             style: 'expanded',
             comments: 'true'
         })
-            .on('error', gutil.log))
+        .on('error', gutil.log))
         .pipe(gulp.dest('builds/development/css'))
         .pipe(cleanDest("css"))
 });
+
+gulp.task('default',['coffee', 'js', 'compass']);
